@@ -28,4 +28,4 @@ const FetchItems = () => {
   }, [fetchStatus]);
   return <></>;
 };
-export default FetchItems;
+export default FetchItems; 

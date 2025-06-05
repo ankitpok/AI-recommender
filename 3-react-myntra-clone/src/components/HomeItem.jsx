@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { bagActions } from "../store/bagSlice";
+import { Link } from "react-router-dom";
 
 const HomeItem = ({ item }) => {
   const bag = useSelector((store) => store.bag);
@@ -13,9 +14,17 @@ const HomeItem = ({ item }) => {
   };
   return (
     <div className="item-container">
+      <Link to="/itemdetail" state={{item}}>
       <img className="item-image" src={item.image} alt="item image" />
+      </Link>
       <div className="rating">
-        {item.rating.stars} ⭐ | {item.rating.count}
+        {item.rating?.stars ? (
+          <>
+            {item.rating.stars} ⭐ | {item.rating.count}
+          </>
+        ) : (
+          "No rating available"
+        )}
       </div>
       <div className="company-name">{item.company}</div>
       <div className="item-name">{item.item_name}</div>

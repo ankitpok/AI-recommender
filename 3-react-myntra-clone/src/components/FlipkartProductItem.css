@@ -1,0 +1,144 @@
+/* flipkartProductItem.css */
+.product-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.product-clickable-area {
+  padding: 16px;
+  flex-grow: 1;
+}
+
+.product-image-container {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.product-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.product-details {
+  padding: 0 4px;
+}
+
+.product-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #212121;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 40px;
+}
+
+.price-container {
+  margin: 8px 0;
+}
+
+.discounted-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: #212121;
+  margin-right: 8px;
+}
+
+.original-price {
+  font-size: 14px;
+  color: #878787;
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+.discount-badge {
+  font-size: 13px;
+  color: #388e3c;
+  font-weight: 500;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.rating-stars {
+  color: #ffb400;
+  font-size: 14px;
+  margin-right: 6px;
+}
+
+.star.filled {
+  color: #ffb400;
+}
+
+.star:not(.filled) {
+  color: #e0e0e0;
+}
+
+.rating-count {
+  font-size: 12px;
+  color: #878787;
+}
+
+.btn {
+  width: 100%;
+  border-radius: 0 0 6px 6px !important;
+  padding: 8px !important;
+  font-size: 14px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: none !important;
+}
+
+.btn-success {
+  background-color: #2874f0 !important;
+}
+
+.btn-danger {
+  background-color: #fb641b !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-image-container {
+    height: 150px;
+  }
+
+  .product-title {
+    font-size: 13px;
+    min-height: 36px;
+  }
+
+  .discounted-price {
+    font-size: 15px;
+  }
+
+  .original-price {
+    font-size: 13px;
+  }
+}

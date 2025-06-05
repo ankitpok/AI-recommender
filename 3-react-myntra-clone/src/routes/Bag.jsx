@@ -4,20 +4,17 @@ import BagSummary from "../components/BagSummary";
 
 const Bag = () => {
   const bagItems = useSelector((store) => store.bag);
-  const items = useSelector((store) => store.items);
-
-  const finalItems = items.filter((item) => bagItems.includes(item.id));
   return (
     <>
       <main>
         <div className="bag-page">
           <div className="bag-items-container">
-            {finalItems.map((item) => (
-              <BagItem item={item} key={item.id} />
+            {bagItems.map((item) => (
+              <BagItem item={item} key={item.product_id} />
             ))}
           </div>
           <div className="bag-summary">
-            <BagSummary items={finalItems} />
+            <BagSummary items={bagItems} />
           </div>
         </div>
       </main>

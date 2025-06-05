@@ -1,8 +1,8 @@
 const BagSummary = ({ items }) => {
   const CONVENIENCE_FEES = 99;
-  const totalPrice = items.reduce((sum, item) => sum + item.original_price, 0);
+  const totalPrice = items.reduce((sum, item) => sum + parseFloat(item.price), 0);
   const totalDiscount = items.reduce(
-    (discount, item) => discount + (item.original_price - item.current_price),
+    (discount, item) => discount + (item.price - item.discounted_price),
     0
   );
   const rounded_discount = Math.round(totalDiscount);

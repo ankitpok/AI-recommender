@@ -3,6 +3,7 @@ services:
     build:
       context: ./2-actual-backend
       dockerfile: Dockerfile
+    image: sironionrings/node-api:latest
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -11,6 +12,7 @@ services:
     build:
       context: ./3-django-backend
       dockerfile: Dockerfile
+    image: sironionrings/django-api:latest
     ports:
       - "8000:8000"
     volumes:
@@ -23,6 +25,7 @@ services:
     build:
       context: ./3-react-myntra-clone
       dockerfile: Dockerfile
+    image: sironionrings/react-frontend:latest
     ports:
       - "5173:5173"
     environment:

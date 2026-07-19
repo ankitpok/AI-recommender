@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./2-actual-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  django:
+    build:
+      context: ./3-django-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./2-actual-backend:/app/data
+    environment:
+      - DATA_DIR=/app/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./3-react-myntra-clone
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    depends_on:
+      - django
+      - backend
+    restart: unless-stopped

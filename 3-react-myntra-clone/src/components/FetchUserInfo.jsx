@@ -1,13 +1,11 @@
-import axios from "axios";
+import api from "../services/api";
 import { useEffect } from "react";
 
 const FetchUserInfo = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/get_user", {
-          withCredentials: true,  // Include credentials in the request
-        });
+        const response = await api.get("/api/get_user");
         console.log("User data:", response.data);
       } catch (error) {
         console.log("Error fetching user data:", error);

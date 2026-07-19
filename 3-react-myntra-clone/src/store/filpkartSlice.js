@@ -1,6 +1,5 @@
-// store/flipkartSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../services/api';
 
 const initialState = {
   products: [],
@@ -33,9 +32,7 @@ export const flipkartSlice = createSlice({
 export const fetchFlipkartProducts = (page = 1) => async (dispatch) => {
   dispatch(setLoading(true));
   try {
-    const response = await axios.get(`http://localhost:8000/api_2/products/`, {
-      params: { page }
-    });
+    const response = await api.get('/api_2/products/', { params: { page } });
 
     if (page === 1) {
       dispatch(setFlipkartProducts(response.data.results));

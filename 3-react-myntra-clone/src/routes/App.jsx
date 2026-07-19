@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../components/LoadingSpinner";
-import FetchItemsDjango from "../components/FetchItemsD";
+import FetchItems from "../components/FetchItems";
 import FetchUserInfo from "../components/FetchUserInfo";
 import { AuthProvider } from "../context/auth-context";
 import LogOut from "../components/LogoutPage";
@@ -16,7 +16,7 @@ function App() {
     <>
     <AuthProvider>
       <Header />
-      <FetchItemsDjango />
+      <FetchItems />
       <FetchFlipkartProducts/>
       {fetchStatus.currentlyFetching ? <LoadingSpinner /> : <Outlet />}
       <Footer />

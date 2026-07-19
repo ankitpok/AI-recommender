@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 const AuthContext = createContext();
 
@@ -9,9 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuth = async () => {
     try {
-      const res = await axios.get('http://localhost:8000/api/get_user/', {
-        withCredentials: true
-      });
+      const res = await api.get('/api/get_user/');
       setUser(res.data.username ? { username: res.data.username } : null);
     } catch (err) {
       setUser(null);
@@ -21,62 +19,34 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (username, password) => {
-  try {
-    // 1. First get CSRF token
-    const csrfResponse = await axios.get(
-      'http://localhost:8000/api/csrf/',
-      { withCredentials: true }
-    );
-    
-    // 2. Then login with CSRF token
-    const response = await axios.post(
-      'http://localhost:8000/api/receive_items/',
-      { username, password },
-      {
-        withCredentials: true,
-        headers: {
-          'X-CSRFToken': csrfResponse.data.csrfToken,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    try {
+      const csrfResponse = await api.get('/api/csrf/');
+      const response = await api.post('/api/receive_items/', { username, password }, {
+        headers: { 'X-CSRFToken': csrfResponse.data.csrfToken },
+      });
 
-    if (response.data.message === "Login successful") {
-      await checkAuth();
-      return true;
+      if (response.data.message === "Login successful") {
+        await checkAuth();
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Login error:", error);
+      return false;
     }
-    return false;
-  } catch (error) {
-    console.error("Login error:", error);
-    return false;
-  }
-};
-  const logout = async () => {
-  try {
-    // 1. Get fresh CSRF token
-    const csrfResponse = await axios.get(
-      'http://localhost:8000/api/csrf/', 
-      { withCredentials: true }
-    );
+  };
 
-    // 2. Send logout request
-    await axios.post(
-      'http://localhost:8000/api/logout/',
-      {}, // Empty payload
-      {
-        withCredentials: true,
-        headers: {
-          'X-CSRFToken': csrfResponse.data.csrfToken,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-  } catch (error) {
-    // Even if request fails, clear local state
-    setUser(null);
-    throw error; // Re-throw for components to handle
-  }
-};
+  const logout = async () => {
+    try {
+      const csrfResponse = await api.get('/api/csrf/');
+      await api.post('/api/logout/', {}, {
+        headers: { 'X-CSRFToken': csrfResponse.data.csrfToken },
+      });
+    } catch (error) {
+      setUser(null);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     checkAuth();

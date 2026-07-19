@@ -1,35 +1,47 @@
-import axios from "axios";
+import api from "../services/api";
 import { useState } from "react";
 
 const Signup = () => {
-  
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const handleOnChange = (e) =>{
-    setFormData({...formData, [e.target.name] : [e.target.value]})
-  }
+  const handleOnChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-
+    e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/signup/", JSON.stringify(formData), {
-        headers: {"Content-Type":"application/json"},
-
-      });
-      console.log(response)
+      const response = await api.post("/api/signup/", formData);
+      console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  return (<>
-  <input type="text" name="username" value={ formData.username} onChange={handleOnChange} placeholder="Enter username"></input><br></br>
-  <input type="password" name="password" value={formData.password} onChange={handleOnChange} placeholder="Enter Password"></input><br></br>
-  <button type="button" className="btn btn-dark" onClick={handleSubmit}>Submit</button>
-</>
-  )
-}
+  return (
+    <>
+      <input
+        type="text"
+        name="username"
+        value={formData.username}
+        onChange={handleOnChange}
+        placeholder="Enter username"
+      />
+      <br />
+      <input
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleOnChange}
+        placeholder="Enter Password"
+      />
+      <br />
+      <button type="button" className="btn btn-dark" onClick={handleSubmit}>
+        Submit
+      </button>
+    </>
+  );
+};
 export default Signup;

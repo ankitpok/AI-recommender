@@ -2,47 +2,43 @@ import os
 import django
 import json
 
-# Set up Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myntra_backend.settings')
 django.setup()
 
 from items.models import Item, Product
 
 
-# def load_items():
-#     # Read the JSON file from the original backend
-#     with open(r'D:\react\Myntra clone\2-actual-backend\items.json', 'r') as f:
-#         data = json.load(f)
-    
-#     # Clear existing items
-#     Item.objects.all().delete()
-    
-#     # Load items from JSON
-#     for item_data in data['items'][0]:
-#         Item.objects.create(
-#             id=item_data.get('id', ''),
-#             image=item_data.get('image', ''),
-#             company=item_data.get('company', ''),
-#             item_name=item_data.get('item_name', ''),
-#             original_price=item_data.get('original_price', 0),
-#             current_price=item_data.get('current_price', 0),
-#             discount_percentage=item_data.get('discount_percentage', 0),
-#             return_period=item_data.get('return_period', 0),
-#             delivery_date=item_data.get('delivery_date', ''),
-#             rating_stars=item_data.get('rating', {}).get('stars', 0),
-#             rating_count=item_data.get('rating', {}).get('count', 0)
-#         )
-    
-#     print(f"Loaded {Item.objects.count()} items")
-    
+DATA_DIR = os.environ.get('DATA_DIR', os.path.join(os.path.dirname(__file__), '..', 'data'))
 
 
+def load_items():
+    items_path = os.path.join(DATA_DIR, 'items.json')
+    with open(items_path, 'r') as f:
+        data = json.load(f)
 
+    Item.objects.all().delete()
+
+    for item_data in data['items'][0]:
+        Item.objects.create(
+            id=item_data.get('id', ''),
+            image=item_data.get('image', ''),
+            company=item_data.get('company', ''),
+            item_name=item_data.get('item_name', ''),
+            original_price=item_data.get('original_price', 0),
+            current_price=item_data.get('current_price', 0),
+            discount_percentage=item_data.get('discount_percentage', 0),
+            return_period=item_data.get('return_period', 0),
+            delivery_date=item_data.get('delivery_date', ''),
+            rating_stars=item_data.get('rating', {}).get('stars', 0),
+            rating_count=item_data.get('rating', {}).get('count', 0)
+        )
+
+    print(f"Loaded {Item.objects.count()} items")
 
 
 def load_flipkart_data():
-
-    with open(r'D:\react\Myntra clone\2-actual-backend\flipkart_fashion_products_dataset.json', 'r') as f:
+    flipkart_path = os.path.join(DATA_DIR, 'flipkart_fashion_products_dataset.json')
+    with open(flipkart_path, 'r') as f:
         products = json.load(f)
 
     Product.objects.all().delete()
@@ -52,12 +48,6 @@ def load_flipkart_data():
             return float(str(value).replace(',', '').replace('₹', '').strip())
         except:
             return 0.0
-
-    def parse_float(value, default=0.0):
-        try:
-            return float(value)
-        except (ValueError, TypeError):
-            return default
 
     def parse_int(value, default=0):
         try:
@@ -72,9 +62,8 @@ def load_flipkart_data():
 
     for product in products:
         product_id = product.get('pid')
-        product_title = product.get('title', '').strip().lower()  # Normalize title
+        product_title = product.get('title', '').strip().lower()
 
-        # Skip if ID or title already seen
         if not product_id or product_id in seen_ids or product_title in seen_titles:
             continue
 
@@ -103,7 +92,7 @@ def load_flipkart_data():
 
     print(f"Successfully loaded {Product.objects.count()} products")
 
-    
+
 if __name__ == '__main__':
-    #load_items()
+    load_items()
     load_flipkart_data()

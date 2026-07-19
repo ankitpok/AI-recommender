@@ -1,6 +1,6 @@
-// ProductRecommendations.jsx
 import React, { useEffect, useState } from 'react';
-import './recommendations.css'; 
+import API_BASE_URL from '../config/api';
+import './recommendations.css';
 
 const ProductRecommendations = ({ currentProduct }) => {
   const [recommendedProducts, setRecommendedProducts] = useState([]);
@@ -9,14 +9,14 @@ const ProductRecommendations = ({ currentProduct }) => {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api_ai/recommend/', {
+        const response = await fetch(`${API_BASE_URL}/api_ai/recommend/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ input: currentProduct.product_name })
         });
-        
+
         const data = await response.json();
-        setRecommendedProducts(data.products || []); // Now using full product data
+        setRecommendedProducts(data.products || []);
       } catch (error) {
         console.error("Recommendation error:", error);
       } finally {
@@ -36,8 +36,8 @@ const ProductRecommendations = ({ currentProduct }) => {
       <div className="recommendations-grid">
         {recommendedProducts.map(product => (
           <div key={product.product_id} className="product-card">
-            <img 
-              src={product.image_url} 
+            <img
+              src={product.image_url}
               alt={product.product_name}
               onError={(e) => e.target.src = 'https://placehold.co/200?text=Product'}
             />
